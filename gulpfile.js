@@ -6,6 +6,7 @@ var gulp = require('gulp'),
     csso = require('gulp-csso'),
     scss = require('gulp-scss'),
     rigger = require('gulp-rigger'),
+    concat = require('gulp-concat'),
     browserSync = require('browser-sync');
 
 
@@ -25,6 +26,15 @@ gulp.task('js', function () {
         }));
 });
 
+gulp.task('jsModels', function () {
+    return gulp.src(path.src + 'js/models/*.js') // Откуда брать файлы и какие
+        .pipe(concat('models.js'))
+        .pipe(gulp.dest(path.build + 'js/'))
+        .pipe(browserSync.reload({
+            stream: true
+        }));
+});
+
 gulp.task('scss', function () {
     return gulp.src([path.src + 'scss/*.scss' , '!' + path.src + 'scss/template.scss'])
         .pipe(scss())
@@ -37,8 +47,6 @@ gulp.task('scss', function () {
 
 gulp.task('htc', function () {
     return gulp.src(path.src + 'scss/htc/*.htc')
-        .pipe(scss())
-        // .pipe(csso()) // Минифмкация css
         .pipe(gulp.dest(path.build + 'css/htc/'))
         .pipe(browserSync.reload({
             stream: true
@@ -47,10 +55,7 @@ gulp.task('htc', function () {
 
 gulp.task('clean', function () {
     return gulp.src(['build/*'], {read: false})
-        .pipe(clean())
-        .pipe(browserSync.reload({
-            stream: true
-        }));
+        .pipe(clean());
 });
 
 gulp.task('vendor', function () {
@@ -85,17 +90,24 @@ gulp.task('fonts', function () {
         }));
 });
 
-gulp.task('html', function () {
-    return gulp.src([path.src + "*.html", "!" + path.src + "_*.html"])
-         .pipe(rigger())
+gulp.task('json', function () {
+    return gulp.src(path.src + '**/*.json')
         .pipe(gulp.dest(path.build))
         .pipe(browserSync.reload({
             stream: true
         }));
 });
 
-gulp.task('copy', ['fonts', 'vendor', 'files', 'img', 'htc']);
-gulp.task('build', ['copy', 'js', 'scss', 'html']);
+gulp.task('html', function () {
+    return gulp.src(path.src + "**/*.html")
+        .pipe(gulp.dest(path.build))
+        .pipe(browserSync.reload({
+            stream: true
+        }));
+});
+
+gulp.task('copy', ['fonts', 'vendor', 'files', 'img', 'htc', 'json']);
+gulp.task('build', ['copy', 'js', 'scss', 'html', 'jsModels']);
 gulp.task('default', ['clean'], function () {
     gulp.start(['build']);
 });
@@ -104,12 +116,13 @@ gulp.task('browserSync', function() {
     browserSync({
         server: {
             baseDir: path.build
-        },
+        }
     })
 });
 
 gulp.task('watch', ['browserSync'], function () {
     gulp.watch(path.src + 'scss/*.scss', ['scss']);
-    gulp.watch([path.src + "html/*.html", path.src + "*.html"], ['html']);
+    gulp.watch([path.src + "pages/*.html", path.src + "*.html"], ['html']);
     gulp.watch(path.src + 'js/*.js', ['js']);
+    gulp.watch(path.src + 'js/models/*.js', ['jsModels']);
 });
