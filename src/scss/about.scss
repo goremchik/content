@@ -1,1 +1,16 @@
 @import "template";
+
+#map {
+  width: 100%;
+  height: 400px;
+  z-index: 1;
+}
+
+#aboutInfo {
+  width: $widthTablet - 20px;
+  margin: 10px auto 20px;
+  padding: 10px;
+
+  border: $borderValue;
+  @include border-radius(3px)
+}

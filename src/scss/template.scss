@@ -1,14 +1,31 @@
 //Global constants
-$background: #eee;
+
+$background: #fafafa;
+$colorHover: darken($background, 4%);
+$colorText: #222;
+$lightText: #838a92;
+$darkText: #464646;
+$hoverText: #6da3bd;
+$darkenHoverText: darken($hoverText, 6%);
+$headerHight: 50px;
+$colorBorder: $lightText;
+$searchHeight: 25px;
+$searchWidth: 250px;
+$footerHeight: 40px;
+
+$widthBig: 1280px;
+$widthTablet: 960px;
+$widthMobile: 760px;
+$widthSmall: 500px;
+
+$borderValue: 1px solid $colorBorder;
 
 //Useful functions
-
 @mixin border-radius($radius) {
   -webkit-border-radius: $radius;
   -moz-border-radius: $radius;
   -ms-border-radius: $radius;
   border-radius: $radius;
-  behavior: url(htc/pie.htc);
 }
 
 @mixin box-shadow($radius) {
@@ -16,7 +33,6 @@ $background: #eee;
   -moz-box-shadow: $radius;
   -ms-box-shadow: $radius;
   box-shadow: $radius;
-  behavior: url(htc/pie.htc);
 }
 
 @mixin box-shadow($where, $from, $to) {
@@ -26,5 +42,4 @@ $background: #eee;
   background: -o-linear-gradient($where, $from, $to);
   background: linear-gradient($where, $from, $to);
   -pie-background: linear-gradient($where, $from, $to);
-  behavior: url(htc/pie.htc);
 }

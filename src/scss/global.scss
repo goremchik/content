@@ -12,9 +12,142 @@
   font-style: normal;
 }
 
-.icon:before {
-  display: inline-block;
-  font: normal normal normal 14px/1 FontAwesome;
-  font-size: inherit;
-  text-rendering: auto;
+.icon {
+  &:before {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+  }
+
+  &.search:before {
+    content: "\f002";
+
+  }
+}
+
+html {
+  font-family: 'Fira Sans',sans-serif;;
+  font-size: 16px;
+  height: 100%;
+  background-color: $background;
+}
+
+body {
+  background-color: $background;
+}
+
+#page {
+  margin-top: $headerHight;
+  background-color: $background;
+  padding: 10px;
+
+}
+
+@media (max-width: 600px) {
+  html {
+    font-size: 24px;
+  }
+}
+
+.small-text {
+  font-size: 0.8rem;
+}
+
+.small-href {
+  cursor: pointer;
+  font-size: 0.8rem;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.btn {
+  font-family: 'Fira Sans',sans-serif;;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 8px 15px;
+  text-align: center;
+
+  @include border-radius(3px);
+
+  &.small {
+    font-size: 0.8rem;
+    padding: 6px 12px;
+  }
+
+  &.light {
+    color: $lightText;
+    background-color: $background;
+    border: $borderValue;
+
+
+    &:hover {
+      color: $hoverText;
+      border-color: $hoverText;
+    }
+  }
+
+  &.dark {
+    color: $background;
+    background-color: $hoverText;
+    border: 0px;
+
+    &:hover {
+      background-color: $darkenHoverText;
+    }
+  }
+
+}
+
+.content {
+  margin: auto;
+  width: $widthTablet;
+}
+
+.header-text {
+  font-size: 1.1rem;
+  padding-bottom: 10px;
+}
+
+#searchBlock {
+  padding-top: 10px;
+  width: $searchWidth;
+  float: right;
+
+  input {
+    height: $searchHeight;
+    border: $borderValue;
+    width: 80%;
+    background-color: $background;
+    color: $colorText;
+    padding-left: 5px;
+
+    &:hover {
+      border-color: $hoverText;
+    }
+  }
+
+  button {
+    height: $searchHeight + 4;
+    width: $searchHeight + 4;
+    //float: left;
+
+    position: relative;
+    left: -5px;
+
+    cursor: pointer;
+    background-color: $background;
+    color: $colorText;
+    border: $borderValue;
+
+    &:hover {
+      color: $hoverText;
+      border-color: $hoverText;
+    }
+
+  }
 }

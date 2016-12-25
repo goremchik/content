@@ -1,1 +1,59 @@
 @import "template";
+
+.fixed-head-block {
+  height: $headerHight;
+  position: fixed;
+  top: 0;
+  left: 0;
+  border-bottom: $borderValue;
+  width: 100%;
+  background-color: $background;
+  z-index: 100;
+}
+
+.head {
+  margin: auto;
+  width: $widthTablet;
+  height: 100%;
+}
+
+.logo {
+  height: 100%;
+  float: left;
+  font-size: 1.5em;
+  line-height: $headerHight;
+  margin-left: 10px;
+
+  color: $colorText;
+  text-decoration: none;
+
+  &:visited {
+    color: $colorText;
+    text-decoration: none;
+  }
+}
+
+#userInfo {
+  //display: inline-block;
+  float: right;
+  padding-top: 8px;
+  padding-right: 5px;
+  text-align: center;
+  margin: auto;
+}
+
+#sharing {
+  float: right;
+  padding-top: 12px;
+  padding-right: 15px;
+}
+
+@media (max-width: $widthTablet) {
+  .head {
+    width: 100%;
+  }
+
+  #searchBlock {
+    width: $searchWidth - 30;
+  }
+}

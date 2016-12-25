@@ -2,6 +2,29 @@
  * Created by Goremchik on 2016-12-06.
  */
 
+
+function addEvent(elem, type, handler){
+    if (elem.addEventListener){
+        elem.addEventListener(type, handler, false);
+    } else {
+        var evt = document.createEventObject();
+        elem.attachEvent("on" + type, handler);
+    }
+}
+
+function removeEvent(elem, type, handler) {
+    if (elem.removeEventListener) {
+        elem.removeEventListener(type, handler);
+    } else {
+        elem.detachEvent("on" + type, handler);
+    }
+}
+
+function getTarget(e) {
+    var evn = e || window.event;
+    return evn.srcElement || e.target;
+}
+
 if (!localStorage) {
     var localStorage = {
         getItem: function (sKey) {
@@ -275,4 +298,195 @@ if (!JSON) {
             };
         }
     }());
+}
+
+(function () {
+
+    if (typeof window.Element === "undefined" || "classList" in document.documentElement) return;
+
+    var prototype = Array.prototype,
+        push = prototype.push,
+        splice = prototype.splice,
+        join = prototype.join;
+
+    function DOMTokenList(el) {
+        this.el = el;
+        // The className needs to be trimmed and split on whitespace
+        // to retrieve a list of classes.
+        var classes = el.className.replace(/^\s+|\s+$/g,'').split(/\s+/);
+        for (var i = 0; i < classes.length; i++) {
+            push.call(this, classes[i]);
+        }
+    };
+
+    DOMTokenList.prototype = {
+        add: function(token) {
+            if(this.contains(token)) return;
+            push.call(this, token);
+            this.el.className = this.toString();
+        },
+        contains: function(token) {
+            return this.el.className.indexOf(token) != -1;
+        },
+        item: function(index) {
+            return this[index] || null;
+        },
+        remove: function(token) {
+            if (!this.contains(token)) return;
+            for (var i = 0; i < this.length; i++) {
+                if (this[i] == token) break;
+            }
+            splice.call(this, i, 1);
+            this.el.className = this.toString();
+        },
+        toString: function() {
+            return join.call(this, ' ');
+        },
+        toggle: function(token) {
+            if (!this.contains(token)) {
+                this.add(token);
+            } else {
+                this.remove(token);
+            }
+
+            return this.contains(token);
+        }
+    };
+
+    window.DOMTokenList = DOMTokenList;
+
+    function defineElementGetter (obj, prop, getter) {
+        if (Object.defineProperty) {
+            Object.defineProperty(obj, prop,{
+                get : getter
+            });
+        } else {
+            obj.__defineGetter__(prop, getter);
+        }
+    }
+
+    defineElementGetter(Element.prototype, 'classList', function () {
+        return new DOMTokenList(this);
+    });
+
+})();
+
+if(!window.innerHeight) {
+    (function (window, document) {
+
+        var html = document.documentElement;
+        var body = document.body;
+
+        var define = function (object, property, getter) {
+            if (typeof object[property] === 'undefined') {
+                Object.defineProperty(object, property, {get: getter});
+            }
+        };
+
+        define(window, 'innerWidth', function () {
+            return html.clientWidth
+        });
+        define(window, 'innerHeight', function () {
+            return html.clientHeight
+        });
+
+        define(window, 'scrollX', function () {
+            return window.pageXOffset || html.scrollLeft
+        });
+        define(window, 'scrollY', function () {
+            return window.pageYOffset || html.scrollTop
+        });
+
+        define(document, 'width', function () {
+            return Math.max(body.scrollWidth, html.scrollWidth, body.offsetWidth, html.offsetWidth, body.clientWidth, html.clientWidth)
+        });
+        define(document, 'height', function () {
+            return Math.max(body.scrollHeight, html.scrollHeight, body.offsetHeight, html.offsetHeight, body.clientHeight, html.clientHeight)
+        });
+
+        return define;
+
+    }(window, document));
+}
+
+// getComputedStyle
+!('getComputedStyle' in this) && (this.getComputedStyle = (function () {
+    function getPixelSize(element, style, property, fontSize) {
+        var
+            sizeWithSuffix = style[property],
+            size = parseFloat(sizeWithSuffix),
+            suffix = sizeWithSuffix.split(/\d/)[0],
+            rootSize;
+
+        fontSize = fontSize != null ? fontSize : /%|em/.test(suffix) && element.parentElement ? getPixelSize(element.parentElement, element.parentElement.currentStyle, 'fontSize', null) : 16;
+        rootSize = property == 'fontSize' ? fontSize : /width/i.test(property) ? element.clientWidth : element.clientHeight;
+
+        return (suffix == 'em') ? size * fontSize : (suffix == 'in') ? size * 96 : (suffix == 'pt') ? size * 96 / 72 : (suffix == '%') ? size / 100 * rootSize : size;
+    }
+
+    function setShortStyleProperty(style, property) {
+        var
+            borderSuffix = property == 'border' ? 'Width' : '',
+            t = property + 'Top' + borderSuffix,
+            r = property + 'Right' + borderSuffix,
+            b = property + 'Bottom' + borderSuffix,
+            l = property + 'Left' + borderSuffix;
+
+        style[property] = (style[t] == style[r] == style[b] == style[l] ? [style[t]]
+            : style[t] == style[b] && style[l] == style[r] ? [style[t], style[r]]
+                : style[l] == style[r] ? [style[t], style[r], style[b]]
+                    : [style[t], style[r], style[b], style[l]]).join(' ');
+    }
+
+    function CSSStyleDeclaration(element) {
+        var
+            currentStyle = element.currentStyle,
+            style = this,
+            fontSize = getPixelSize(element, currentStyle, 'fontSize', null);
+
+        for (property in currentStyle) {
+            if (/width|height|margin.|padding.|border.+W/.test(property) && style[property] !== 'auto') {
+                style[property] = getPixelSize(element, currentStyle, property, fontSize) + 'px';
+            } else if (property === 'styleFloat') {
+                style['float'] = currentStyle[property];
+            } else {
+                style[property] = currentStyle[property];
+            }
+        }
+
+        setShortStyleProperty(style, 'margin');
+        setShortStyleProperty(style, 'padding');
+        setShortStyleProperty(style, 'border');
+
+        style.fontSize = fontSize + 'px';
+
+        return style;
+    }
+
+    CSSStyleDeclaration.prototype = {
+        constructor: CSSStyleDeclaration,
+        getPropertyPriority: function () {},
+        getPropertyValue: function ( prop ) {
+            return this[prop] || '';
+        },
+        item: function () {},
+        removeProperty: function () {},
+        setProperty: function () {},
+        getPropertyCSSValue: function () {}
+    };
+
+    function getComputedStyle(element) {
+        return new CSSStyleDeclaration(element);
+    }
+
+    return getComputedStyle;
+})(this));
+
+
+function getElementHeight(element) {
+    if (getComputedStyle(element).height !== 'NaNpx') {
+        return getComputedStyle(element).height;
+    } else {
+        return element.clientHeight;
+    }
 }

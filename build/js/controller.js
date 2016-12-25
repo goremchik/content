@@ -2,14 +2,8 @@
  * Created by Goremchik on 2016-12-06.
  */
 
-if (window.addEventListener) {
-    window.addEventListener('hashchange', renderView);
-    window.addEventListener('load', renderView);
-} else {
-    window.attachEvent("onhashchange", renderView);
-    window.attachEvent("onload", renderView);
-}
-
+addEvent(window, 'hashchange', renderView);
+addEvent(window, 'load', renderView);
 
 function renderView() {
 
@@ -29,8 +23,8 @@ function renderView() {
             url = 'pages/audio.html';
             model = audioModel;
             break;
-        case "image":
-            url = 'pages/image.html';
+        case "images":
+            url = 'pages/images.html';
             model = imagesModel;
             break;
         case "about":
