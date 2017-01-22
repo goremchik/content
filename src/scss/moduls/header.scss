@@ -1,0 +1,40 @@
+@import "template";
+
+.fixed-head-block {
+  height: $headerHight;
+  position: fixed;
+  top: 0;
+  left: 0;
+  border-bottom: $borderValue;
+  width: 100%;
+  background-color: $background;
+  z-index: 100;
+}
+
+.head {
+  margin: auto;
+  width: $widthTablet;
+  height: 100%;
+}
+
+.logo {
+  height: 100%;
+  float: left;
+  font-size: 1.5em;
+  line-height: $headerHight;
+
+  color: $colorText;
+  text-decoration: none;
+
+  &:visited {
+    color: $colorText;
+    text-decoration: none;
+  }
+}
+
+@media (max-width: $widthTablet) {
+  .head {
+    width: 100%;
+    margin: 0;
+  }
+}

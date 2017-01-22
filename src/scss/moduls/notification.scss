@@ -1,0 +1,43 @@
+@import "template";
+
+.notify-box {
+  width: 150px;
+  background-color: #f2dede;
+  color: #a94442;
+  border: 1px solid #ebccd1;
+  max-height: 50px;
+  overflow: hidden;
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 1000;
+  display: none;
+  cursor: pointer;
+  text-align: center;
+  font-family: 'Cabin', Helvetica, Arial, sans-serif;
+
+  @include border-radius(3px);
+
+  &.success-notify {
+    background-color: #dff0d8;
+    color: #3c763d;
+    border-color: #d6e9c6;
+  }
+
+  &.warning-notify {
+    background-color: #fcf8e3;
+    color: #8a6d3b;
+    border-color: #faebcc;
+  }
+
+  &.info-notify {
+    background-color: #d9edf7;
+    color: #31708f;
+    border-color: #bce8f1;
+  }
+
+  .notify-title{
+    padding: 10px;
+    font-size: 16px;
+  }
+}

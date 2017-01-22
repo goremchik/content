@@ -1,0 +1,8 @@
+.content-item {
+  text-align: center; }
+  .content-item .image-element {
+    height: 250px;
+    width: 250px; }
+  .content-item .page-title {
+    padding-bottom: 0;
+    margin-top: 20px; }

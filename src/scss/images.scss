@@ -1,1 +1,72 @@
-@import "template";
+@import "moduls/template";
+
+#contentBlock {
+  text-align: center;
+  @include clearfix();
+}
+
+.image-element {
+  display: inline-block;
+  width: $imgSize;
+  height: $imgSize;
+  cursor: pointer;
+  margin: 20px;
+  overflow: hidden;
+
+  img {
+    width: auto;
+    height: $imgSize;
+  }
+}
+
+.content-view {
+  text-align: center;
+  background-color: $darkText;
+  min-height: 100%;
+  position: relative;
+  @include userSelectNone();
+
+  .next-button, .prev-button {
+    color: transparent;
+    width: 100px;
+
+    &:hover {
+      color: $background;
+    }
+
+    .icon {
+      top: 48%;
+    };
+  }
+
+  .image-view-element {
+    display: inline-block;
+    width: auto;
+    height: auto;
+    max-height: 100%;
+    max-height: 100vh;
+    max-width: 100%;
+  }
+}
+
+.image-preview {
+  text-align: center;
+  overflow: hidden;
+  margin: 10px 0;
+
+  img {
+    height: 300px;
+    width: auto;
+    max-width: 100%;
+    display: inline-block;
+  }
+
+  .delete {
+    display: block;
+    margin: auto;
+  }
+}
+
+.info-container {
+  padding-bottom: 10px;
+}

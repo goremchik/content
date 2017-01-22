@@ -1,0 +1,115 @@
+@import "template";
+
+.slider {
+  position: relative;
+  width: $widthTablet;
+  margin: auto;
+  overflow: hidden;
+  height: $sliderHeight;
+
+  .slide-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: $widthTablet * 10;
+    height: 100%;
+  }
+
+  .slide {
+    position: relative;
+    height: 100%;
+    width: $widthTablet;
+    overflow: hidden;
+    float: left;
+
+    img {
+      position: absolute;
+      top: -25%;
+      left: 0;
+      width: 100%;
+      height: auto;
+    }
+
+    .info-block {
+      @include halfDarkBackground();
+
+      display: none;
+      position: absolute;
+      width: 50%;
+      height: 50%;
+      top: 25%;
+      left: 25%;
+      text-align: center;
+      overflow: hidden;
+
+      .slider-title {
+        padding: 10px;
+        font-size: 1.5rem;
+        color: $background;
+      }
+
+      .slider-text {
+        padding: 10px;
+        font-size: 1.1rem;
+        color: $background;
+      }
+    }
+  }
+
+  .slider-btn {
+    text-align: center;
+    position: absolute;
+    height: $sliderHeight;
+    top: 0;
+    font-size: 50px;
+    cursor: pointer;
+
+    color: transparent;
+    width: $sliderButtonSize;
+    text-align: center;
+    line-height: $sliderHeight;
+
+    &.slider-next {
+      right: 0;
+      &:before {
+        content: '\f054';
+      }
+
+      &:hover {
+        color: $background;
+      }
+    }
+
+    &.slider-prev {
+      left: 0;
+      &:before {
+        content: '\f053';
+      }
+
+      &:hover {
+        color: $background;
+      }
+    }
+  }
+}
+
+@media (max-width: $widthTablet) {
+  .slider {
+    width: 100%;
+
+    .info-block {
+      width: 70%;
+      height: 70%;
+    }
+
+    .slider-btn {
+      &.slider-next {
+        right: 1px;
+      }
+
+      &.slider-prev {
+        left: 1px;
+      }
+    }
+  }
+}

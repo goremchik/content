@@ -1,0 +1,105 @@
+//Global constants
+
+$background: #fafafa;
+$colorHover: darken($background, 4%);
+$colorText: #222;
+$lightText: #838a92;
+$darkText: #2e2e2e;
+$hoverText: #6da3bd;
+$darkenHoverText: darken($hoverText, 6%);
+$headerHight: 50px;
+$colorBorder: $lightText;
+$searchHeight: 28px;
+$searchWidth: 240px;
+$footerHeight: 40px;
+
+$selectWidth: 180px;
+
+$widthBig: 1280px;
+$widthTablet: 960px;
+$widthMobile: 800px;
+$widthSmall: 550px;
+$widthMin: 400px;
+
+$borderValue: 1px solid $colorBorder;
+
+$sliderHeight: 300px;
+$sliderButtonSize: 100px;
+$mobileMenuWidth: 400px;
+
+$imgSize: 300px;
+
+//Useful functions
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  -ms-border-radius: $radius;
+  border-radius: $radius;
+}
+
+@mixin box-shadow($radius) {
+  -webkit-box-shadow: $radius;
+  -moz-box-shadow: $radius;
+  -ms-box-shadow: $radius;
+  box-shadow: $radius;
+}
+
+@mixin box-shadow($where, $from, $to) {
+  background: $from;
+  background: -webkit-linear-gradient($where, $from, $to);
+  background: -moz-linear-gradient($where, $from, $to);
+  background: -o-linear-gradient($where, $from, $to);
+  background: linear-gradient($where, $from, $to);
+  -pie-background: linear-gradient($where, $from, $to);
+}
+
+@mixin halfDarkBackground() {
+  background: none;
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGNi2AQAALsAtXXCpvIAAAAA);
+  background: rgba(0, 0, 0, 0.7);
+}
+
+@mixin iconStyle() {
+  &:before {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+  }
+}
+
+@mixin userSelectNone() {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+@mixin clearfix() {
+  & {
+    &:before,
+    &:after {
+      content: " ";
+      display: table;
+    }
+    &:after {
+      clear: both;
+    }
+  }
+
+}
+
+@mixin preSpace() {
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+
+@mixin box-sizing() {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}

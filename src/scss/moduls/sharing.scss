@@ -1,0 +1,34 @@
+@import "template";
+
+.sharing {
+  float: right;
+  padding-top: 12px;
+  padding-right: 15px;
+}
+
+.social {
+  display: inline-block;
+  height: 30px;
+  width: 30px;
+
+  font-family: 'Fira Sans', sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+
+  @include border-radius(15px);
+
+  color: $background;
+  background-color: $hoverText;
+  border: 0;
+
+  &:hover {
+    background-color: $darkenHoverText;
+  }
+}
+
+@media (max-width: $widthTablet) {
+  .sharing {
+    padding-top: 10px;
+  }
+}

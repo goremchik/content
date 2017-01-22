@@ -1,5 +1,26 @@
-/**
- * Created by Goremchik on 2016-12-06.
+
+/*
+ This file contains functions and polyfills for a normal work in an older browsers.
+
+ Functions:
+ addEvent(elem, type, handler) - elem.addEventListener(type, handler) replacement,
+ removeEvent(elem, type, handler) - elem.removeEventListener(type, handler) replacement,
+ getTarget(event) - event.target replacement,
+ getElementHeight(element) - parseFloat(getComputedStyle(element).height) replacement,
+ getElementWidth(element) - parseFloat(getComputedStyle(element).width) replacement,
+ getStyle(element, style) - getComputedStyle(element)[style] replacement,
+ isElement(htmlObject) - function for checking whether it is an HTML object or not
+
+ Polyfills:
+ - localStorage;
+ - Object.create
+ - Function.bind
+ - JSON
+ - classList
+ - Array.isArray
+ - Array.indexOf
+ - Array.lastIndexOf
+ - window (innerWidth, innerHeght)
  */
 
 
@@ -25,37 +46,72 @@ function getTarget(e) {
     return evn.srcElement || e.target;
 }
 
+function getElementHeight(element) {
+    if (window.getComputedStyle) {
+        return parseFloat(getComputedStyle(element).height);
+    } else {
+        return parseFloat(element.clientHeight);
+    }
+}
+
+function getElementWidth(element) {
+    if (window.getComputedStyle) {
+        return parseFloat(getComputedStyle(element).width);
+    } else {
+        return element.clientWidth;
+    }
+}
+
+function getStyle(element, style) {
+    if (window.getComputedStyle) {
+        return getComputedStyle(element)[style];
+    } else {
+        return element.currentStyle[style];
+    }
+}
+
+//Returns true if it is a DOM element
+function isElement(o) {
+    return (
+        typeof HTMLElement === "object" ? o instanceof HTMLElement : //DOM2
+            o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName==="string"
+    );
+}
+
 if (!localStorage) {
-    var localStorage = {
-        getItem: function (sKey) {
-            if (!sKey || !this.hasOwnProperty(sKey)) {
-                return null;
+    (function(window, document) {
+        "use strict";
+        var userData, attr, attributes;
+
+        if (!window.localStorage && (userData = document.body) && userData.addBehavior) {
+            if (userData.addBehavior("#default#userdata")) {
+                userData.load((attr = "localStorage"));
+                attributes = userData.XMLDocument.documentElement.attributes;
+
+                window.localStorage = {
+                    "length" : attributes.length,
+                    "key" : function(idx) { return (idx >= this.length) ? null : attributes[idx].name; },
+                    "getItem" : function(key) { return userData.getAttribute(key); },
+                    "setItem" : function(key, value) {
+                        userData.setAttribute(key, value);
+                        userData.save(attr);
+                        this.length += ((userData.getAttribute(key) === null) ? 1 : 0);
+                    },
+                    "removeItem" : function(key) {
+                        if (userData.getAttribute(key) !== null) {
+                            userData.removeAttribute(key);
+                            userData.save(attr);
+                            this.length = Math.max(0, this.length - 1);
+                        }
+                    },
+                    "clear" : function() {
+                        while (this.length) { userData.removeAttribute(attributes[--this.length].name); }
+                        userData.save(attr);
+                    }
+                };
             }
-            return unescape(document.cookie.replace(new RegExp("(?:^|.*;\\s*)" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*((?:[^;](?!;))*[^;]?).*"), "$1"));
-        },
-        key: function (nKeyId) {
-            return unescape(document.cookie.replace(/\s*\=(?:.(?!;))*$/, "").split(/\s*\=(?:[^;](?!;))*[^;]?;\s*/)[nKeyId]);
-        },
-        setItem: function (sKey, sValue) {
-            if (!sKey) {
-                return;
-            }
-            document.cookie = escape(sKey) + "=" + escape(sValue) + "; expires=Tue, 19 Jan 2038 03:14:07 GMT; path=/";
-            this.length = document.cookie.match(/\=/g).length;
-        },
-        length: 0,
-        removeItem: function (sKey) {
-            if (!sKey || !this.hasOwnProperty(sKey)) {
-                return;
-            }
-            document.cookie = escape(sKey) + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
-            this.length--;
-        },
-        hasOwnProperty: function (sKey) {
-            return (new RegExp("(?:^|;\\s*)" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=")).test(document.cookie);
         }
-    };
-    localStorage.length = (document.cookie.match(/\=/g) || window.localStorage).length;
+    })(this, this.document);
 }
 
 if (!Object.create) {
@@ -409,84 +465,54 @@ if(!window.innerHeight) {
     }(window, document));
 }
 
-// getComputedStyle
-!('getComputedStyle' in this) && (this.getComputedStyle = (function () {
-    function getPixelSize(element, style, property, fontSize) {
-        var
-            sizeWithSuffix = style[property],
-            size = parseFloat(sizeWithSuffix),
-            suffix = sizeWithSuffix.split(/\d/)[0],
-            rootSize;
+if(!Array.isArray) {
+    Array.isArray = function (obj) {
+        return Object.prototype.toString.call(obj) === "[object Array]";
+    };
+}
 
-        fontSize = fontSize != null ? fontSize : /%|em/.test(suffix) && element.parentElement ? getPixelSize(element.parentElement, element.parentElement.currentStyle, 'fontSize', null) : 16;
-        rootSize = property == 'fontSize' ? fontSize : /width/i.test(property) ? element.clientWidth : element.clientHeight;
+if (!Array.prototype.indexOf) {
+    Array.prototype.indexOf = function (obj, start) {
+        for (var i = (start || 0), j = this.length; i < j; i++) {
+            if (this[i] === obj) {
+                return i;
+            }
+        }
+        return -1;
+    };
+}
 
-        return (suffix == 'em') ? size * fontSize : (suffix == 'in') ? size * 96 : (suffix == 'pt') ? size * 96 / 72 : (suffix == '%') ? size / 100 * rootSize : size;
-    }
+if (!Array.prototype.lastIndexOf) {
+    Array.prototype.lastIndexOf = function(searchElement /*, fromIndex*/) {
+        'use strict';
 
-    function setShortStyleProperty(style, property) {
-        var
-            borderSuffix = property == 'border' ? 'Width' : '',
-            t = property + 'Top' + borderSuffix,
-            r = property + 'Right' + borderSuffix,
-            b = property + 'Bottom' + borderSuffix,
-            l = property + 'Left' + borderSuffix;
+        if (this === void 0 || this === null) {
+            throw new TypeError();
+        }
 
-        style[property] = (style[t] == style[r] == style[b] == style[l] ? [style[t]]
-            : style[t] == style[b] && style[l] == style[r] ? [style[t], style[r]]
-                : style[l] == style[r] ? [style[t], style[r], style[b]]
-                    : [style[t], style[r], style[b], style[l]]).join(' ');
-    }
+        var n, k,
+            t = Object(this),
+            len = t.length >>> 0;
+        if (len === 0) {
+            return -1;
+        }
 
-    function CSSStyleDeclaration(element) {
-        var
-            currentStyle = element.currentStyle,
-            style = this,
-            fontSize = getPixelSize(element, currentStyle, 'fontSize', null);
-
-        for (property in currentStyle) {
-            if (/width|height|margin.|padding.|border.+W/.test(property) && style[property] !== 'auto') {
-                style[property] = getPixelSize(element, currentStyle, property, fontSize) + 'px';
-            } else if (property === 'styleFloat') {
-                style['float'] = currentStyle[property];
-            } else {
-                style[property] = currentStyle[property];
+        n = len - 1;
+        if (arguments.length > 1) {
+            n = Number(arguments[1]);
+            if (n != n) {
+                n = 0;
+            }
+            else if (n != 0 && n != (1 / 0) && n != -(1 / 0)) {
+                n = (n > 0 || -1) * Math.floor(Math.abs(n));
             }
         }
 
-        setShortStyleProperty(style, 'margin');
-        setShortStyleProperty(style, 'padding');
-        setShortStyleProperty(style, 'border');
-
-        style.fontSize = fontSize + 'px';
-
-        return style;
-    }
-
-    CSSStyleDeclaration.prototype = {
-        constructor: CSSStyleDeclaration,
-        getPropertyPriority: function () {},
-        getPropertyValue: function ( prop ) {
-            return this[prop] || '';
-        },
-        item: function () {},
-        removeProperty: function () {},
-        setProperty: function () {},
-        getPropertyCSSValue: function () {}
+        for (k = n >= 0 ? Math.min(n, len - 1) : len - Math.abs(n); k >= 0; k--) {
+            if (k in t && t[k] === searchElement) {
+                return k;
+            }
+        }
+        return -1;
     };
-
-    function getComputedStyle(element) {
-        return new CSSStyleDeclaration(element);
-    }
-
-    return getComputedStyle;
-})(this));
-
-
-function getElementHeight(element) {
-    if (getComputedStyle(element).height !== 'NaNpx') {
-        return getComputedStyle(element).height;
-    } else {
-        return element.clientHeight;
-    }
 }

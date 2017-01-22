@@ -1,0 +1,151 @@
+@import "template";
+
+#menu {
+  float: left;
+  margin-left: 50px;
+
+  .menu-element {
+    float: left;
+    margin-top: 15px;
+    font-size: 1.1rem;
+    border-right: $borderValue;
+
+    &.last-element, &:last-child {
+      border-right: none;
+    }
+
+    a {
+      padding: 15px 10px;
+      color: $lightText;
+      text-decoration: none;
+      cursor: pointer;
+
+      &:hover {
+        color: $hoverText;
+      }
+
+    }
+  }
+
+  .submenu {
+    display: none;
+    position: absolute;
+    z-index: 1000;
+    top: $headerHight;
+    border: $borderValue;
+    background: $background;
+
+    .submenu-element {
+      a {
+        display: block;
+        padding: 15px 30px;
+        color: $darkText;
+        text-decoration: none;
+        width: 150px;
+        font-weight: 100;
+        font-size: 0.9rem;
+        cursor: pointer;
+
+        &:hover {
+          background: $hoverText;
+          color: $background;
+        }
+      }
+    }
+  }
+}
+
+.user-menu {
+  float: right;
+  padding-top: 8px;
+
+  button {
+    float: left;
+    margin-left: 5px;
+  }
+}
+
+@media (max-width: $widthTablet) {
+  .user-menu {
+    display: none;
+  }
+
+  #menu {
+    float: right;
+    margin: 0 10px;
+    height: $headerHight;
+    line-height: $headerHight;
+    vertical-align: middle;
+    font-size: $headerHight - 10;
+    color: $lightText;
+    cursor: pointer;
+
+    ul {
+      width: $mobileMenuWidth;
+      display: none;
+      position: absolute;
+      top: $headerHight + 1;
+      right: -30px;
+      background: $background;
+      overflow-x: hidden;
+      overflow-y: auto;
+      border-left: $borderValue;
+      border-bottom: $borderValue;
+
+      .menu-element {
+        float: none;
+        margin: 0;
+        a {
+          cursor: pointer;
+          display: block;
+          width: $mobileMenuWidth;
+          padding: 5px 30px;
+
+          &:hover {
+            background: $hoverText;
+            color: $background;
+          }
+        }
+      }
+
+
+    }
+
+    &:before {
+      cursor: pointer;
+      content: '\f0c9';
+    }
+
+    &:hover {
+      color: $hoverText;
+    }
+
+    .submenu {
+      position: static;
+      border: none;
+
+      .submenu-element {
+        width: 100%;
+        a {
+          cursor: pointer;
+          color: $lightText;
+          font-size: 0.9rem;
+          display: block;
+          width: auto;
+          padding: 5px 30px 5px 50px;
+        }
+      }
+    }
+
+  }
+
+}
+
+@media (max-width: $widthMin) {
+  #menu {
+    ul {
+      width: 110%;
+      right: -10px;
+    }
+  }
+}

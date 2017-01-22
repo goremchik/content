@@ -1,0 +1,82 @@
+@import "template";
+
+.multiselect-block {
+  display: inline-block;
+  height: $searchHeight;
+  min-width: $selectWidth;
+  text-align: center;
+  line-height: $searchHeight;
+  background: $background;
+  border: $borderValue;
+  cursor: pointer;
+  position: relative;
+  color: $lightText;
+
+  @include userSelectNone();
+
+    @include iconStyle();
+    &:before, &:after {
+      padding: 0 5px;
+      display: block;
+      width: 20px;
+      height: 100%;
+      line-height: $searchHeight;
+    }
+    &:before {
+      float: left;
+      content: '\f067';
+    }
+    &:after {
+      float: right;
+      content: ' ';
+    }
+
+  &[open=true] {
+    &:before {
+      float: left;
+      content: '\f068';
+    }
+  }
+
+  .options-block {
+    display: none;
+    position: absolute;
+    top: $searchHeight;
+    left: -1px;
+    width: 100%;
+    background: $background;
+    border: $borderValue;
+    z-index: 100;
+
+    .option {
+      height: $searchHeight;
+      &[checked=true] {
+        background: $colorHover;
+        @include iconStyle();
+
+        &:before, &:after {
+          padding: 0 5px;
+          display: block;
+          width: 20px;
+          height: 100%;
+          line-height: $searchHeight;
+        }
+
+        &:before {
+          float: left;
+          content: '\f00c';
+        }
+
+        &:after {
+          float: right;
+          content: ' ';
+        }
+      }
+
+      &:hover {
+        color: $hoverText;
+      }
+    }
+
+  }
+}

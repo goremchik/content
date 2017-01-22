@@ -1,0 +1,392 @@
+@import "template";
+
+.content {
+  margin: auto;
+  width: $widthTablet;
+}
+
+.input-block {
+  display: block;
+  padding: 10px 0;
+  float: left;
+
+  input {
+    height: $searchHeight;
+    border: $borderValue;
+    width: $searchWidth - $searchHeight - 5;
+    background-color: $background;
+    color: $colorText;
+    padding-left: 5px;
+
+    &:hover {
+      border-color: $hoverText;
+    }
+  }
+
+  button {
+    height: $searchHeight;
+    width: $searchHeight;
+
+    position: relative;
+    left: -5px;
+
+    cursor: pointer;
+    background-color: $background;
+    color: $colorText;
+    border: $borderValue;
+
+    &:hover {
+      color: $hoverText;
+      border-color: $hoverText;
+    }
+
+  }
+}
+
+.select-block {
+  display: block;
+  padding: 10px 0 10px 10px;
+  float: right;
+  background: $background;
+
+  .categories, .sort-by {
+    cursor: pointer;
+    height: $searchHeight;
+    width: $selectWidth;
+    background: $background;
+    border: $borderValue;
+  }
+
+  select::selection {
+    background: $background;
+  }
+}
+
+.pages {
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  line-height: 30px;
+  color: $lightText;
+  cursor: default;
+
+  .page-button {
+    padding: 4px;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+      color: $hoverText;
+    }
+  }
+
+  .next, .prev {
+    display: block;
+    height: 30px;
+    width: 30px;
+    font-size: 25px;
+    text-align: center;
+  }
+
+  .next {
+    float: right;
+  }
+
+  .prev {
+    float: left;
+  }
+
+  .current-page {
+    text-decoration: underline;
+    cursor: default;
+    &:hover {
+      color: $lightText;
+    }
+  }
+}
+
+// Fix bugs in ie-8
+body[browser=ie-8] {
+  .input-block {
+    input {
+      position: relative;
+      top: -6px;
+    }
+
+    button {
+      height: 32px;
+      width: 32px;
+    }
+  }
+}
+
+html[data-mobile="true"] {
+  .select-block {
+    .categories, .sort-by {
+      height: $searchHeight + 3;
+    }
+  }
+
+  .input-block {
+    input {
+      height: $searchHeight + 3;
+    }
+
+    button {
+      height: $searchHeight + 3;
+      width: $searchHeight + 3;
+
+      height: ($searchHeight + 7)\9;
+    }
+  }
+
+  body[browser=ie-8] {
+    .input-block {
+      input {
+        top: -7px;
+      }
+
+      button {
+        height: 35px;
+      }
+    }
+  }
+
+  body[browser=ie-8] {
+    .input-block {
+      input {
+        width: 250px;
+        height: 31px;
+      }
+    }
+  }
+}
+
+.content-view-title {
+  //float: left;
+  color: $darkText;
+  font-size: 1.5rem;
+  padding: 8px 30px;
+}
+
+.rating-block.content-rating {
+  padding: 8px 30px;
+}
+
+.pages-info {
+  font-size: 0.8rem;
+  text-align: center;
+  line-height: 1rem;
+  color: $lightText;
+}
+
+.content-view-text {
+  color: $darkText;
+  padding: 8px 30px;
+  font-size: 0.8rem;
+}
+
+.card-view-element {
+  display: inline-block;
+  width: 200px;
+  height: 250px;
+  margin: 20px;
+  cursor: pointer;
+  text-align: center;
+  border: $borderValue;
+  padding: 15px;
+  overflow: hidden;
+  position: relative;
+  @include userSelectNone();
+
+  .card-title {
+    font-size: 1.2rem;
+    padding: 10px 0;
+
+  }
+
+  .card-description {
+    font-size: 0.9rem;
+    padding: 10px 0;
+    text-align: center;
+    overflow: hidden;
+    height: 70px;
+  }
+
+  .card-icon {
+    color: $darkText;
+    font-size: 100px;
+  }
+
+  .card-text-block {
+    margin-top: 20px;
+    overflow: hidden;
+    padding: 10px;
+    border: $borderValue;
+    height: 100px;
+  }
+
+  .card-rating, .card-votes {
+    position: absolute;
+    bottom: 15px;
+    font-style: italic;
+    font-size: 0.8rem;
+
+    .icon {
+      font-size: 1rem;
+    }
+  }
+
+  .card-rating {
+    left: 15px;
+  }
+
+  .card-votes {
+    right: 15px;
+  }
+}
+
+.view-container {
+  position: relative;
+  padding: 10px 30px;
+
+  .next-button, .prev-button {
+    color: $lightText;
+    width: 40px;
+
+    &:hover {
+      color: $hoverText;
+    }
+  }
+
+  .icon {
+    top: 38%;
+  };
+}
+
+.next-button, .prev-button {
+  cursor: pointer;
+  line-height: 100%;
+  position: absolute;
+  height: 100%;
+  top: 0;
+  text-align: center;
+
+  .icon {
+    position: relative;
+    height: 40px;
+    line-height: 40px;
+    font-size: 35px;
+  };
+}
+
+.prev-button {
+  left: 0;
+}
+
+.next-button {
+  right: 0;
+}
+
+.add-content {
+  position: absolute;
+  right: 10px;
+  top: 0;
+  padding: 10px 0;
+}
+
+.input-file {
+  display: none;
+  margin: 10px 0;
+}
+
+.input-file-label {
+  margin: 10px 0;
+  display: inline-block;
+}
+
+.textarea-field {
+  width: 100%;
+  height: 50px
+}
+
+.icon {
+  &.cancel-icon, &.confirm-icon, &.edit-icon {
+    display: none;
+    color: $lightText;
+    position: absolute;
+    top: 5px;
+  }
+}
+
+.edit-icon, .cancel-icon {
+  right: 5px;
+}
+
+.confirm-icon, .cancel-icon {
+  cursor: pointer;
+  font-size: 1.1rem;
+
+  &:hover {
+    color: $hoverText;
+  }
+}
+
+.confirm-icon {
+  right: 25px;
+}
+
+.share-view {
+  margin: 0 5px;
+}
+
+@media (max-width: $widthMobile) {
+  .select-block {
+    float: none;
+    text-align: center;
+    padding: 10px 0;
+
+    .categories, .sort-by {
+      width: $searchWidth + 50;
+    }
+  }
+
+  .input-block {
+    width: 100%;
+    float: none;
+    text-align: center;
+    padding: 10px 0 10px 10px;
+
+    input {
+      position: relative;
+      left: -8px;
+      width: $searchWidth - $searchHeight + 45;
+    }
+
+    button {
+      position: relative;
+      left: -13px;
+    }
+  }
+
+  .add-content {
+    text-align: center;
+    position: static;
+  }
+
+  #addContent {
+    width: $searchWidth + 50;
+    height: 35px;
+    @include border-radius(0);
+  }
+}
+
+@media (max-width: $widthSmall) {
+  .pages-info {
+    font-size: 0.7rem;
+    text-align: right;
+    line-height: 0.9rem;
+    padding-right: 10px;
+    margin-bottom: -10px;
+  }
+}

@@ -1,5 +1,15 @@
-@import "template";
+@import "moduls/template";
 
-.content {
+.content-item {
+  text-align: center;
 
+  .image-element {
+    height: 250px;
+    width: 250px;
+  }
+
+  .page-title {
+    padding-bottom: 0;
+    margin-top: 20px;
+  }
 }

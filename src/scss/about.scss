@@ -1,16 +1,24 @@
-@import "template";
+@import "moduls/template";
 
-#map {
+.map-on-site {
   width: 100%;
   height: 400px;
   z-index: 1;
 }
 
-#aboutInfo {
-  width: $widthTablet - 20px;
+.big-center-block {
+  width: $widthTablet - 87px;
   margin: 10px auto 20px;
-  padding: 10px;
+  padding: 30px;
 
   border: $borderValue;
   @include border-radius(3px)
+}
+
+@media (max-width: $widthTablet) {
+  .big-center-block {
+    width: 90%;
+    padding: 5%;
+    @include border-radius(0)
+  }
 }

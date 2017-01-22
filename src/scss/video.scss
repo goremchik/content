@@ -1,1 +1,116 @@
-@import "template";
+@import "moduls/template";
+
+.card-video-element {
+  display: inline-block;
+  width: 250px;
+  height: 180px;
+  margin: 20px;
+  cursor: pointer;
+  @include userSelectNone();
+  overflow: hidden;
+  position: relative;
+
+  &:hover {
+    width: 248px;
+    height: 178px;
+    border: $borderValue;
+
+    .card-icon {
+      display: block;
+    }
+  }
+
+  .card-title {
+    text-align: left;
+    font-size: 1rem;
+    padding: 9px 10px;
+
+  }
+
+  .card-poster {
+    height: 140px;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+    }
+  }
+
+  .card-icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 100px;
+    line-height: 150px;
+    color: $background;
+    display: none;
+    text-align: center;
+    width: 100%;
+  }
+}
+
+.video-item {
+  width: 100%;
+  height: auto;
+}
+
+object.video-item {
+  height: 500px;
+}
+
+.view-video-container {
+  position: relative;
+  padding: 0;
+}
+
+.video-preview {
+  text-align: center;
+  overflow: hidden;
+  margin: 10px 0;
+
+  video, object {
+    width: 100%;
+    display: inline-block;
+  }
+
+  .delete {
+    display: block;
+    margin: auto;
+  }
+}
+
+.poster-preview {
+  text-align: center;
+  overflow: hidden;
+  margin: 10px 0;
+
+  img {
+    height: 300px;
+    width: auto;
+    max-width: 100%;
+    display: inline-block;
+  }
+
+  .delete {
+    display: block;
+    margin: auto;
+  }
+}
+
+@media (max-width: $widthMobile) {
+  object.video-item {
+    height: 400px;
+  }
+}
+
+@media (max-width: $widthSmall) {
+  object.video-item {
+    height: 300px;
+  }
+}
+
+@media (max-width: $widthMin) {
+  object.video-item {
+    height: 300px;
+  }
+}

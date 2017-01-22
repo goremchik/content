@@ -1,0 +1,27 @@
+@import "template";
+
+.rating-block {
+  display: inline-block;
+  height: 25px;
+  font-size: 22px;
+  padding: 1px;
+
+  .rating-star {
+    cursor: pointer;
+    height: 25px;
+    @include iconStyle();
+    color: $darkText;
+
+    &[data-type=empty] {
+      &:before {
+        content: '\f006 ';
+      }
+    }
+
+    &[data-type=full] {
+      &:before {
+        content: '\f005 ';
+      }
+    }
+  }
+}

@@ -1,0 +1,83 @@
+.card-video-element {
+  display: inline-block;
+  width: 250px;
+  height: 180px;
+  margin: 20px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+  overflow: hidden;
+  position: relative; }
+  .card-video-element:hover {
+    width: 248px;
+    height: 178px;
+    border: 1px solid #838a92; }
+    .card-video-element:hover .card-icon {
+      display: block; }
+  .card-video-element .card-title {
+    text-align: left;
+    font-size: 1rem;
+    padding: 9px 10px; }
+  .card-video-element .card-poster {
+    height: 140px;
+    overflow: hidden; }
+    .card-video-element .card-poster img {
+      width: 100%; }
+  .card-video-element .card-icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 100px;
+    line-height: 150px;
+    color: #fafafa;
+    display: none;
+    text-align: center;
+    width: 100%; }
+
+.video-item {
+  width: 100%;
+  height: auto; }
+
+object.video-item {
+  height: 500px; }
+
+.view-video-container {
+  position: relative;
+  padding: 0; }
+
+.video-preview {
+  text-align: center;
+  overflow: hidden;
+  margin: 10px 0; }
+  .video-preview video, .video-preview object {
+    width: 100%;
+    display: inline-block; }
+  .video-preview .delete {
+    display: block;
+    margin: auto; }
+
+.poster-preview {
+  text-align: center;
+  overflow: hidden;
+  margin: 10px 0; }
+  .poster-preview img {
+    height: 300px;
+    width: auto;
+    max-width: 100%;
+    display: inline-block; }
+  .poster-preview .delete {
+    display: block;
+    margin: auto; }
+
+@media (max-width: 800px) {
+  object.video-item {
+    height: 400px; } }
+@media (max-width: 550px) {
+  object.video-item {
+    height: 300px; } }
+@media (max-width: 400px) {
+  object.video-item {
+    height: 300px; } }

@@ -1,4 +1,17 @@
-@import "template";
+@import "moduls/template";
+@import "moduls/header";
+@import "moduls/menu";
+@import "moduls/footer";
+@import "moduls/reset";
+@import "moduls/slider";
+@import "moduls/notification";
+@import "moduls/popUp";
+@import "moduls/multiselect";
+@import "moduls/content";
+@import "moduls/rating";
+@import "moduls/fileUploader";
+@import "moduls/modal";
+@import "moduls/sharing";
 
 @font-face {
   font-family: 'FontAwesome';
@@ -13,16 +26,74 @@
 }
 
 .icon {
-  &:before {
-    display: inline-block;
-    font: normal normal normal 14px/1 FontAwesome;
-    font-size: inherit;
-    text-rendering: auto;
-  }
+  @include iconStyle();
 
   &.search:before {
     content: "\f002";
+  }
 
+  &.icon-left:before {
+    content: "\f053";
+  }
+
+  &.icon-right:before {
+    content: "\f054";
+  }
+
+  &.sort-desc:before {
+    content: "\f0dd";
+  }
+
+  &.sort-asc:before {
+    content: "\f0de";
+  }
+
+  &.newspaper:before {
+    content: "\f1ea";
+  }
+
+  &.music:before {
+    content: "\f001";
+  }
+
+  &.star-full:before {
+    content: "\f005";
+  }
+
+  &.user:before {
+    content: "\f2bd";
+  }
+
+  &.play-circle:before {
+    content: "\f01d";
+  }
+
+  &.load:before {
+    content: "\f110";
+  }
+
+  &.pencil:before {
+    content: "\f040";
+  }
+
+  &.check:before {
+    content: "\f00c";
+  }
+
+  &.cancel:before {
+    content: "\f00d";
+  }
+
+  &.fb:before {
+    content: "\f09a";
+  }
+
+  &.vk:before {
+    content: "\f189";
+  }
+
+  &.tvit:before {
+    content: "\f099";
   }
 }
 
@@ -35,19 +106,16 @@ html {
 
 body {
   background-color: $background;
+  overflow-x: hidden;
+  height: 100%;
 }
 
 #page {
-  margin-top: $headerHight;
+  @include box-sizing();
+  min-height: 100%;
   background-color: $background;
-  padding: 10px;
-
-}
-
-@media (max-width: 600px) {
-  html {
-    font-size: 24px;
-  }
+  padding: $headerHight 0 $footerHeight 0;
+  margin-bottom: -($footerHeight + 1);
 }
 
 .small-text {
@@ -74,11 +142,6 @@ body {
 
   @include border-radius(3px);
 
-  &.small {
-    font-size: 0.8rem;
-    padding: 6px 12px;
-  }
-
   &.light {
     color: $lightText;
     background-color: $background;
@@ -100,54 +163,151 @@ body {
       background-color: $darkenHoverText;
     }
   }
-
 }
 
-.content {
-  margin: auto;
-  width: $widthTablet;
-}
-
-.header-text {
-  font-size: 1.1rem;
+.title-text {
+  font-size: 1.5rem;
   padding-bottom: 10px;
+  color: $lightText;
+  margin-bottom: 20px;
 }
 
-#searchBlock {
-  padding-top: 10px;
-  width: $searchWidth;
+.info-text {
+  font-size: 1rem;
+  color: $darkText;
+  text-align: justify;
+  line-height: 1.5rem;
+}
+
+.check-a {
+  cursor: pointer;
+  text-decoration: none;
+  color: $darkText;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.page-title {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: $lightText;
+  padding: 15px 10px;
+}
+
+.separate-line {
+  width: 100%;
+}
+
+.centered-block {
+  width: $widthTablet - 20;
+  margin: auto;
+  position: relative;
+
+  padding-left: 10px;
+  padding-right: 10px;
+  @include clearfix();
+}
+
+.column-2-3 {
+  position: relative;
+  width: (2 / 3) * 100%;
+  float: left;
+}
+
+.column-1-3 {
+  position: relative;
+  text-align: center;
+  width: (1 / 3) * 100%;
   float: right;
+}
 
-  input {
-    height: $searchHeight;
-    border: $borderValue;
-    width: 80%;
-    background-color: $background;
-    color: $colorText;
-    padding-left: 5px;
+.input-field {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  height: 40px;
+  padding: 5px 10px;
+  font-size: 1rem;
+  margin: 5px 0 15px 0;
+  border: $borderValue;
+  @include border-radius(0);
+}
 
-    &:hover {
-      border-color: $hoverText;
-    }
+.label-field {
+  display: block;
+  width: 100%;
+  font-size: 1.1rem;
+  margin: 15px 0 10px 0;
+}
+
+
+.textarea-field {
+  box-sizing: border-box;
+  display: block;
+  padding: 5px 10px;
+  font-size: 1rem;
+  border: $borderValue;
+  width: 100%;
+}
+
+.text-btn {
+  cursor: pointer;
+  color: $lightText;
+  font-size: 0.9rem;
+  font-style: italic;
+  padding: 5px;
+  margin: 0 25px;
+
+  &:hover {
+    text-decoration: underline;
+    color: $hoverText;
+  }
+}
+
+.content-owner {
+  cursor: pointer;
+
+  &[contenteditable=true] {
+    cursor: auto;
+    border: 1px solid $hoverText;
+  }
+}
+
+@media (max-width: $widthTablet) {
+  html {
+    font-size: 18px;
   }
 
-  button {
-    height: $searchHeight + 4;
-    width: $searchHeight + 4;
-    //float: left;
-
-    position: relative;
-    left: -5px;
-
-    cursor: pointer;
-    background-color: $background;
-    color: $colorText;
-    border: $borderValue;
-
-    &:hover {
-      color: $hoverText;
-      border-color: $hoverText;
-    }
-
+  .page-title {
+    text-align: center;
+    padding: 10px 0;
   }
+
+  .centered-block {
+    padding-left: 0;
+    padding-right: 0;
+    width: 94%;
+    margin-left: 3%;
+  }
+}
+
+@media (max-width: $widthSmall) {
+  .column-2-3 {
+    text-align: center;
+    width: 100%;
+    float: none;
+  }
+
+  .column-1-3 {
+    text-align: center;
+    width: 100%;
+    float: none;
+  }
+
+  .content-view-description {
+    text-align: justify;
+  }
+
 }

@@ -1,0 +1,61 @@
+
+.modal-block {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 2000;
+  background: transparent;
+
+  .modal-window {
+    background: $background;
+    color: $darkText;
+    width: 400px;
+    min-height: 100px;
+    margin: 100px auto;
+    border: $borderValue;
+
+    .modal-text {
+      padding: 40px 15px 20px 15px;
+      text-align: center;
+      font-size: 1rem;
+    }
+
+    .modal-buttons {
+      text-align: right;
+      padding: 10px 15px;
+      @include userSelectNone();
+
+      .modal-button {
+        cursor: pointer;
+        background: $background;
+        color: $darkText;
+        text-align: center;
+        min-width: 70px;
+        padding: 7px 14px;
+        border: $borderValue;
+        border-radius: 0;
+        margin-left: 10px;
+
+        &:hover {
+          border-color: $hoverText;
+          color: $hoverText;
+        }
+      }
+
+    }
+  }
+}
+
+@media (max-width: $widthSmall) {
+  .modal-block {
+    .modal-window {
+      width: 90%;
+    }
+
+    .modal-buttons {
+      text-align: center;
+    }
+  }
+}

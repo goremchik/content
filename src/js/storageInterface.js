@@ -1,62 +1,129 @@
-/**
- * Created by Goremchik on 2016-12-09.
+
+/*
+ The object for working with database.
+
+ get(type, callback) - to get an array with a defined type of data
+ type - type of content ('images', 'video', 'audio', 'text')
+ callback(dataArray) - an array of objects is passed to the callback
+
+ set(type, obj, callback) - set an array with a specific type of data
+ type - type of content ('images', 'video', 'audio', 'text')
+ obj - array of objects
+ callback(boolean) - execution status is transmitted to the callback
+
+ add(type, obj, callback) - adding an element into the array with specified type
+ type - type of content ('images', 'video', 'audio', 'text')
+ obj - an object element
+
+ deleteItem: function (type, obj, callback) - deletes an element from the array with specified type
+ type - type of content ('images', 'video', 'audio', 'text')
+ obj - an object element
+ callback(boolean) - execution status is transmitted to the callback
+
+ getItemIndex: function (arr, param) - get the position of the element in the array by id
+ arr - an object array (with id field)
+ param - an object (with id field)/ element id
+ return = (int) index - If the element is found / -1 if there are no elements with such id
+
+ getItemByKey(arr, key, value) - get the position of the element in the array by key
+ arr - an object array (with key attribute)
+ key - object property name
+ value - object property value
+ return = (int) index - If the element is found / false if there are no elements with such key
+
+ changeItem(type, id, key, value, callback) - changes an object field of an array of a specific data type
+ type - type of content ('images', 'video', 'audio', 'text')
+ id - object id
+ key - the name of the changing field
+ value - field value
+ callback(boolean) - execution status is transmitted to the callback
+
+ getElement: function (key, callback) - get the element from the database
+ key - field name in the database
+ callback(data) - data from the database is transmitted to the callback
+
+ setElement: function (key, value, callback) - set an element to the database
+ key - field name in the database
+ value - field value
+ callback(true/false) - execution status is transmitted to the callback
+
+ generateId() - generates a random Id
+ return (int)id
  */
 
 var data = {
-    get: function (type) {
+    get: function (type, callback) {
         var str = localStorage.getItem(type);
-
-        return JSON.parse(str);
+        if (typeof callback === 'function') {
+            callback(JSON.parse(str));
+        }
     },
 
-    set: function(type, obj) {
+    set: function(type, obj, callback) {
         localStorage.setItem(type, JSON.stringify(obj));
+        if (typeof callback === 'function') {
+            callback(true);
+        }
     },
 
-    add: function (type, obj) {
+    add: function (type, obj, callback) {
+        if (typeof callback !== 'function') {
+            callback = function () {};
+        }
 
         if (!obj || typeof obj !== 'object') {
-            throw new TypeError('Parameter is not object!');
+            callback(false);
+            return;
         }
 
-        var objArray = this.get(type);
-        if (!Array.isArray(objArray)) {
-            throw new TypeError('Variable is not array!');
-        }
+        this.get(type, function (objArray) {
+            if (!Array.isArray(objArray)) {
+                callback(false);
+                return;
+            }
 
-        objArray.push(obj);
-        localStorage.setItem(type, JSON.stringify(objArray));
+            objArray.push(obj);
+            this.set(type, objArray, callback);
+        }.bind(this));
     },
 
-    deleteItem: function (type, obj) {
+    deleteItem: function (type, obj, callback) {
+        if (typeof callback !== 'function') {
+            callback = function () {};
+        }
+
         if (!obj || typeof obj !== 'object') {
-            throw new TypeError('Parameter is not object!');
+            callback(false);
+            return;
         }
 
-        var objArray = this.get(type);
-        if (!Array.isArray(objArray)) {
-            throw new TypeError('Variable is not array!');
-        }
+        this.get(type, function (objArray) {
+            if (!Array.isArray(objArray)) {
+                callback(false);
+                return;
+            }
 
-        var index = this.getItemIndex(objArray, obj);
-        if (index === -1) {
-            return true;
-        }
 
-        objArray.splice(index, 1);
-        localStorage.setItem(type, JSON.stringify(objArray));
+            var index = this.getItemIndex(objArray, obj);
+            if (index === -1) {
+                callback(false);
+                return;
+            }
 
-        return true;
+            objArray.splice(index, 1);
+            this.set(type, objArray, callback);
+        }.bind(this));
     },
 
     getItemIndex: function (arr, param) {
-
         if (!Array.isArray(arr) || !param) {
-            throw new TypeError('Wrong parameters!');
+            return -1;
         }
 
         if (typeof param !== 'object') {
             var obj = {id: param};
+        } else {
+            obj = param;
         }
 
         for (var i = 0; i < arr.length; i++) {
@@ -68,8 +135,9 @@ var data = {
     },
 
     getItemByKey: function (arr, key, value) {
+
         if (!Array.isArray(arr) || !key) {
-            throw new TypeError('Wrong parameters!');
+            return false;
         }
 
         for (var i = 0; i < arr.length; i++) {
@@ -80,34 +148,45 @@ var data = {
         return false;
     },
 
-    changeItem: function (type, id, key, value) {
+    changeItem: function (type, id, key, value, callback) {
 
+        if (typeof callback !== 'function') {
+            callback = function () {};
+        }
         if (!id || !key) {
-            throw new TypeError('Wrong parameters!');
+            callback(false);
+            return;
         }
 
-        var objArray = this.get(type);
-        if (!Array.isArray(objArray)) {
-            throw new TypeError('Variable is not array!');
-        }
+        this.get(type, function (objArray) {
+            if (!Array.isArray(objArray)) {
+                callback(false);
+                return;
+            }
 
-        var index = this.getItemIndex(objArray, id);
-        if (index === -1) {
-            return false;
-        }
+            var index = this.getItemIndex(objArray, id);
+            if (index === -1) {
+                callback(false);
+                return;
+            }
 
-        objArray[index][key] = value;
-        localStorage.setItem(type, JSON.stringify(objArray));
-
-        return true;
+            objArray[index][key] = value;
+            this.set(type, objArray, callback);
+        }.bind(this));
     },
 
-    getElement: function (key) {
-        return localStorage.getItem(key);
+    getElement: function (key, callback) {
+        if (typeof callback === 'function') {
+            callback(localStorage.getItem(key));
+        }
     },
 
-    setElement: function (key, value) {
+    setElement: function (key, value, callback) {
         localStorage.setItem(key, value);
+
+        if (typeof callback === 'function') {
+            callback(true);
+        }
     },
 
     generateId: function () {

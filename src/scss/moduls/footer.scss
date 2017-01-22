@@ -1,0 +1,20 @@
+@import "template";
+
+#footer {
+  height: $footerHeight;
+  border-top: $borderValue;
+  width: 100%;
+  text-align: center;
+  color: $lightText;
+  line-height: $footerHeight;
+
+  position: relative;
+  a {
+    color: $lightText;
+
+    &:hover {
+      color: $hoverText;
+    }
+  }
+
+}
